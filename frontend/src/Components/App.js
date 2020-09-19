@@ -1,31 +1,45 @@
 import React from "react";
+import CreateJoinScreen from "./CreateJoinScreen";
+import CreateScreen from "./CreateScreen";
+import JoinScreen from "./JoinScreen";
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstButton: true,
+            currentState: "onCreateJoinScreen",
         };
     }
-    buttonClicked = () => {
+
+    updateCurrentScreen = (newScreen) => {
         this.setState({
-            firstButton: !this.state.firstButton,
+            currentState: newScreen,
         });
     };
 
-    getButton() {
-        if (this.state.firstButton) {
-            return (
-                <button onClick={this.buttonClicked} class="btn btn-primary">
-                    First Button
-                </button>
-            );
+    getCurrentScreen() {
+        switch (this.state.currentState) {
+            case "onJoinScreen":
+                return <JoinScreen updateFunction={this.updateCurrentScreen} />;
+            case "onCreateScreen":
+                return (
+                    <CreateScreen updateFunction={this.updateCurrentScreen} />
+                );
+            case "onCreateJoinScreen":
+                return (
+                    <CreateJoinScreen
+                        updateFunction={this.updateCurrentScreen}
+                    />
+                );
         }
-        return <button onClick={this.buttonClicked}>Second Button</button>;
     }
 
     render() {
-        return <div class="app">{this.getButton()}</div>;
+        return (
+            <div class="app">
+                <div class="mainAppScreen">{this.getCurrentScreen()}</div>
+            </div>
+        );
     }
 }
 

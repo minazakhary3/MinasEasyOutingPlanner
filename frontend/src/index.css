@@ -129,10 +129,13 @@ table {
 }
 
 /*CUSTOM STARTS HERE*/
+body {
+    background-color: #34495e;
+}
+
 .container {
     width: 100%;
     height: 100vh;
-    background-color: red;
     display: flex;
     flex-direction: column;
 }
@@ -140,13 +143,11 @@ table {
 .header {
     height: 10%;
     width: 100%;
-    background-color: #f0f0f0f0;
 }
 
 .app {
     height: 80%;
     width: 100%;
-    background-color: pink;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -156,5 +157,36 @@ table {
 .footer {
     height: 10%;
     width: 100%;
-    background-color: #f0f0f0f0;
+}
+
+.mainAppScreen {
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.createJoinScreen {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.createScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+}
+
+.mainButton {
+    width: 85%;
+    height: 150px;
 }
