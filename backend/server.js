@@ -25,11 +25,13 @@ io.on("connection", (socket) => {
 
     let newRoom;
 
-    socket.on("createRoom", () => {
+    socket.on("createRoom", (info) => {
         newRoom = {
             roomID: Math.floor(Math.random() * 10000),
             users: [],
-            numOfOptions: 2,
+            numOfOptions: info.options.length,
+            host: socket.id,
+            options: info.options,
         };
         rooms.push(newRoom);
         socket.emit("roomID", newRoom);
@@ -94,61 +96,43 @@ io.on("connection", (socket) => {
                 info.name
         );
 
-        console.log(
-            rooms.find((room) => {
-                return room.roomID == info.room;
-            })
-        );
+        room = rooms.find((room) => {
+            return room.roomID == info.room;
+        });
+        console.log(room);
 
         if (info.direction == "right") {
-            rooms
-                .find((room) => {
-                    return room.roomID == info.room;
-                })
-                .users.find((user) => {
+            room.users
+                .find((user) => {
                     return user.name == info.user;
                 })
                 .likes.push(info.name);
         } else if (info.direction == "left") {
-            rooms
-                .find((room) => {
-                    return room.roomID == info.room;
-                })
-                .users.find((user) => {
+            room.users
+                .find((user) => {
                     return user.name == info.user;
                 })
                 .dislikes.push(info.name);
         }
 
         if (
-            rooms
-                .find((room) => {
-                    return room.roomID == info.room;
-                })
-                .users.find((user) => {
+            room.users.find((user) => {
+                return user.name == info.user;
+            }).likes.length +
+                room.users.find((user) => {
                     return user.name == info.user;
-                }).likes.length +
-                rooms
-                    .find((room) => {
-                        return room.roomID == info.room;
-                    })
-                    .users.find((user) => {
-                        return user.name == info.user;
-                    }).dislikes.length ==
-            rooms.find((room) => {
-                return room.roomID == info.room;
-            }).numOfOptions
+                }).dislikes.length ==
+            room.numOfOptions
         ) {
             console.log(info.user + " has finished voting!");
-            rooms
-                .find((room) => {
-                    return room.roomID == info.room;
-                })
-                .users.find((user) => {
-                    return user.name == info.user;
-                }).finishedVoting = true;
+            room.users.find((user) => {
+                return user.name == info.user;
+            }).finishedVoting = true;
 
             socket.emit("finishedVoting");
+            socket.to(room.host).emit("userFinishedVoting", {
+                name: info.user,
+            });
         }
 
         console.log(
@@ -160,6 +144,50 @@ io.on("connection", (socket) => {
                     return user.name == info.user;
                 })
         );
+    });
+
+    socket.on("getResults", (info) => {
+        console.log("Getting Results for: ");
+        let room = rooms.find((room) => {
+            return room.roomID == info.roomID;
+        });
+
+        users = room.users.filter((user) => {
+            return user.finishedVoting == true;
+        });
+
+        room.options.forEach((option) => {
+            room.users.forEach((user) => {
+                if (user.likes.includes(option.name)) {
+                    option.users.push(user.name);
+                }
+            });
+        });
+
+        let maxOption;
+        let maxUsers = 0;
+
+        room.options.forEach((option) => {
+            if (option.users.length > maxUsers) {
+                maxUsers = option.users.length;
+                maxOption = option.name;
+            }
+        });
+
+        console.log(maxOption + " wins!");
+
+        socket.emit("results", {
+            winner: maxOption,
+        });
+
+        io.in(info.roomID).clients((err, clients) => {
+            clients.forEach((client) => {
+                socket.to(client).emit("results", {
+                    winner: maxOption,
+                });
+                console.log(nameIDMap.get(client));
+            });
+        });
     });
 
     socket.on("disconnect", () => {
@@ -168,18 +196,9 @@ io.on("connection", (socket) => {
 });
 
 app.get("/api/defaultoptions", (req, res) => {
-    res.json({
-        options: [
-            {
-                name: "CFC",
-                imageURL:
-                    "https://i.pinimg.com/originals/84/09/05/840905eaba2ebaf855a5ce5a883321e1.jpg",
-            },
-            {
-                name: "Point 90",
-                imageURL:
-                    "https://rowad-rme.com/wp-content/uploads/2015/06/MSH_1666-1200x650.jpg",
-            },
-        ],
+    let options = rooms.find((room) => {
+        return room.roomID == req.query.roomID;
     });
+    console.log(options);
+    res.json(options);
 });

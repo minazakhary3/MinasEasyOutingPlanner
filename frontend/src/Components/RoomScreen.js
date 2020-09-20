@@ -33,7 +33,9 @@ class RoomScreen extends React.Component {
                 });
 
                 axios
-                    .get("http://192.168.1.21:8000/api/defaultoptions")
+                    .get("http://192.168.1.21:8000/api/defaultoptions", {
+                        params: { roomID: info.roomID },
+                    })
                     .then((res) => {
                         this.setState({
                             joinedState: "loaded",
@@ -56,6 +58,13 @@ class RoomScreen extends React.Component {
         socket.on("roomClosed", () => {
             this.setState({
                 joinedState: "roomClosed",
+            });
+        });
+
+        socket.on("results", (info) => {
+            this.setState({
+                winner: info.winner,
+                joinedState: "results",
             });
         });
     }
@@ -98,12 +107,7 @@ class RoomScreen extends React.Component {
                                 flickOnSwipe="true"
                                 className="tinder"
                             >
-                                <div
-                                    class="card"
-                                    style={{
-                                        backgroundImage: `url(${option.imageURL})`,
-                                    }}
-                                >
+                                <div class="card">
                                     <h1>{option.name}</h1>
                                 </div>
                             </TinderCard>
@@ -112,6 +116,8 @@ class RoomScreen extends React.Component {
                 );
             case "finishedVoting":
                 return <h1>FINISHED VOTING!</h1>;
+            case "results":
+                return <h1>{this.state.winner} wins!</h1>;
             case "roomClosed":
                 return <h1>ROOM CLOSED</h1>;
         }
