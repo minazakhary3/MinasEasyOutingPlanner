@@ -1,5 +1,6 @@
 import React from "react";
 import RoomScreen from "./RoomScreen";
+import Header from "./Header";
 
 class JoinScreen extends React.Component {
     constructor(props) {
@@ -24,24 +25,35 @@ class JoinScreen extends React.Component {
         if (this.state.currentScreen == "joinScreen") {
             return (
                 <div class="createScreen">
-                    <input
-                        type="text"
-                        placeholder="Your Name"
-                        id="name"
-                    ></input>
-                    <input
-                        type="text"
-                        placeholder="Room ID"
-                        id="roomID"
-                    ></input>
-                    <button onClick={() => this.joinRoom()}>Join</button>
-                    <button
-                        onClick={() =>
-                            this.props.updateFunction("onCreateJoinScreen")
-                        }
-                    >
-                        Go Back
-                    </button>
+                    <Header />
+                    <div class="joinForm">
+                        <input
+                            type="text"
+                            placeholder="Your Name"
+                            id="name"
+                            class="textInput"
+                        ></input>
+                        <input
+                            type="text"
+                            placeholder="Room ID"
+                            id="roomID"
+                            class="textInput"
+                        ></input>
+                        <button
+                            class="inputButton"
+                            onClick={() => this.joinRoom()}
+                        >
+                            Join
+                        </button>
+                        <button
+                            class="inputButton"
+                            onClick={() =>
+                                this.props.updateFunction("onCreateJoinScreen")
+                            }
+                        >
+                            Go Back
+                        </button>
+                    </div>
                 </div>
             );
         }
