@@ -16,6 +16,10 @@ class JoinScreen extends React.Component {
         });
     };
 
+    leaveRoom = () => {
+        this.props.updateFunction("onCreateJoinScreen");
+    };
+
     getScreen = () => {
         if (this.state.currentScreen == "joinScreen") {
             return (
@@ -45,6 +49,7 @@ class JoinScreen extends React.Component {
             <RoomScreen
                 name={document.getElementById("name").value}
                 roomID={document.getElementById("roomID").value}
+                leaveRoom={this.leaveRoom}
             />
         );
     };
