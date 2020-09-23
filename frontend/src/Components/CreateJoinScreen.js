@@ -5,7 +5,6 @@ class CreateJoinScreen extends React.Component {
     render() {
         return (
             <div class="createJoinScreen">
-                <Header />
                 <div class="buttonGroup">
                     <button
                         class="mainButton"

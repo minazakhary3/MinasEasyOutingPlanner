@@ -133,12 +133,7 @@ table {
     overflow: hidden;
 }
 body {
-    background: rgb(4, 175, 224);
-    background: linear-gradient(
-        90deg,
-        rgba(4, 175, 224, 1) 0%,
-        rgba(2, 122, 224, 1) 100%
-    );
+    background: #dedede;
     overflow: hidden;
 }
 
@@ -147,22 +142,26 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .header {
-    height: 10%;
+    height: 130px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #0069c3;
+    color: #ffffff;
     font-size: 72px;
     text-align: center;
-    margin-top: 75px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #0069c3;
 }
 
 .app {
-    height: 90%;
+    height: 85%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -182,32 +181,42 @@ body {
 }
 
 .mainAppScreen {
-    width: 80vw;
-    height: 90%;
+    width: 900px;
+    height: 100%;
     background-color: #ffffff;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     /*box-shadow: 0px 18px 53px 0px rgba(0, 0, 0, 0.3);*/
 }
 
 .createJoinScreen {
-    height: 100%;
+    height: 85%;
     width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .createScreen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    height: 100%;
+    justify-content: space-around;
+    height: 85%;
+    width: 80%;
+}
+
+.joinScreen {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 80%;
     width: 80%;
 }
 
@@ -220,20 +229,28 @@ body {
     justify-content: center;
 }
 
+.addOption {
+    display: flex;
+}
+
 .mainButton {
-    width: 85%;
-    height: 150px;
+    width: 400px;
+    height: 75px;
     background-color: #0069c3; /* Green */
     border: none;
     color: #ffffff;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    font-size: 28px;
+    font-size: 22px;
     margin: 10px;
     border-radius: 10px;
     cursor: pointer;
     transition-duration: 300ms;
+}
+
+.mainButton:hover {
+    background-color: #04afe0;
 }
 
 .buttonGroup {
@@ -245,24 +262,53 @@ body {
     margin-bottom: 75px;
 }
 
-.mainButton:hover {
-    background-color: #04afe0;
-}
-
 .joinForm {
     display: flex;
     width: 50%;
     flex-direction: column;
-    margin-bottom: 100px;
+}
+
+.createForm {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
 }
 
 .textInput {
-    height: 50px;
+    height: 75px;
+    width: 350px;
     padding-left: 10px;
+    border: none;
+    border-bottom: 1px solid #dedede;
+    margin-bottom: 10px;
+    font-size: 20px;
+    transition-duration: 200ms;
+}
+
+.textInput:focus {
+    outline: none;
+    box-shadow: none;
+    border-bottom: 2px solid #04afe0;
 }
 
 .inputButton {
-    height: 50px;
+    width: 400px;
+    height: 75px;
+    background-color: #0069c3; /* Green */
+    border: none;
+    color: #ffffff;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 22px;
+    margin: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition-duration: 300ms;
+}
+
+.inputButton:hover {
+    background-color: #04afe0;
 }
 
 .cardsContainer {

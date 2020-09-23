@@ -24,8 +24,7 @@ class JoinScreen extends React.Component {
     getScreen = () => {
         if (this.state.currentScreen == "joinScreen") {
             return (
-                <div class="createScreen">
-                    <Header />
+                <div class="joinScreen">
                     <div class="joinForm">
                         <input
                             type="text"
@@ -35,10 +34,12 @@ class JoinScreen extends React.Component {
                         ></input>
                         <input
                             type="text"
-                            placeholder="Room ID"
+                            placeholder="Chamber ID"
                             id="roomID"
                             class="textInput"
                         ></input>
+                    </div>
+                    <div class="buttonGroup">
                         <button
                             class="inputButton"
                             onClick={() => this.joinRoom()}

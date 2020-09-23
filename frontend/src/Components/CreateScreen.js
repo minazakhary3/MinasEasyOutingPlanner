@@ -10,6 +10,7 @@ class CreateScreen extends React.Component {
             roomIDLoaded: false,
             roomID: "0000",
             finishedVoting: [],
+            options: [],
         };
     }
     componentDidMount() {
@@ -37,15 +38,12 @@ class CreateScreen extends React.Component {
 
     createRoom = () => {
         let options = [];
-        document
-            .getElementById("options")
-            .value.split(",")
-            .forEach((option) => {
-                options.push({
-                    name: option,
-                    users: [],
-                });
+        this.state.options.forEach((option) => {
+            options.push({
+                name: option,
+                users: [],
             });
+        });
         socket.emit("createRoom", {
             options: options,
         });
@@ -68,6 +66,23 @@ class CreateScreen extends React.Component {
     getResults = () => {
         socket.emit("getResults", {
             roomID: this.state.roomID,
+        });
+    };
+
+    addOption = (option) => {
+        let currentArray = this.state.options;
+        console.log(option);
+        currentArray.push(option);
+        this.setState({
+            options: currentArray,
+        });
+    };
+
+    removeOption = (option) => {
+        let currentArray = this.state.options;
+        currentArray.splice(currentArray.indexOf(option), 1);
+        this.setState({
+            options: currentArray,
         });
     };
 
@@ -112,20 +127,58 @@ class CreateScreen extends React.Component {
         }
         return (
             <div class="createScreen">
-                <h1>Room Settings</h1>
-                <input
-                    type="text"
-                    placeholder="choices separated by commas"
-                    id="options"
-                ></input>
-                <button onClick={() => this.createRoom()}>Create Room</button>
-                <button
-                    onClick={() =>
-                        this.props.updateFunction("onCreateJoinScreen")
-                    }
-                >
-                    Go Back
-                </button>
+                <div class="createForm">
+                    <input
+                        type="text"
+                        placeholder="Number of Participants"
+                        id="participants"
+                        class="textInput"
+                    ></input>
+                    <div class="addOption">
+                        <input
+                            type="text"
+                            placeholder="Option"
+                            id="options"
+                            class="textInput"
+                        ></input>
+                        <button
+                            onClick={() =>
+                                this.addOption(
+                                    document.getElementById("options").value
+                                )
+                            }
+                        >
+                            Add
+                        </button>
+                    </div>
+                    {this.state.options.map((option) => (
+                        <h2>
+                            {option}{" "}
+                            <button
+                                id={option}
+                                onClick={() => this.removeOption(option)}
+                            >
+                                Remove
+                            </button>
+                        </h2>
+                    ))}
+                </div>
+                <div class="buttonGroup">
+                    <button
+                        onClick={() => this.createRoom()}
+                        class="inputButton"
+                    >
+                        Create Chamber
+                    </button>
+                    <button
+                        class="inputButton"
+                        onClick={() =>
+                            this.props.updateFunction("onCreateJoinScreen")
+                        }
+                    >
+                        Go Back
+                    </button>
+                </div>
             </div>
         );
     };

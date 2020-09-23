@@ -2,12 +2,14 @@ import React from "react";
 import CreateJoinScreen from "./CreateJoinScreen";
 import CreateScreen from "./CreateScreen";
 import JoinScreen from "./JoinScreen";
+import Header from "./Header";
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             currentState: "onCreateJoinScreen",
+            pageName: "MEOP",
         };
     }
 
@@ -17,7 +19,7 @@ class App extends React.Component {
         });
     };
 
-    getCurrentScreen() {
+    getCurrentScreen = () => {
         switch (this.state.currentState) {
             case "onJoinScreen":
                 return <JoinScreen updateFunction={this.updateCurrentScreen} />;
@@ -32,12 +34,26 @@ class App extends React.Component {
                     />
                 );
         }
-    }
+    };
+
+    getPageName = () => {
+        switch (this.state.currentState) {
+            case "onJoinScreen":
+                return "Join Chamber";
+            case "onCreateScreen":
+                return "Create Chamber";
+            case "onCreateJoinScreen":
+                return "MEOP";
+        }
+    };
 
     render() {
         return (
             <div class="app">
-                <div class="mainAppScreen">{this.getCurrentScreen()}</div>
+                <div class="mainAppScreen">
+                    <Header pageName={this.getPageName()} />
+                    {this.getCurrentScreen()}
+                </div>
             </div>
         );
     }
