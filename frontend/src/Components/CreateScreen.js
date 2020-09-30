@@ -1,7 +1,7 @@
 import React from "react";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "192.168.1.21:8000";
+const ENDPOINT = "http://localhost:8000/";
 var socket;
 class CreateScreen extends React.Component {
     constructor(props) {
@@ -27,26 +27,7 @@ class CreateScreen extends React.Component {
                 finishedVoting: currentArray,
             });
         });
-    }
 
-    componentWillUnmount() {
-        socket.emit("deleteRoom", {
-            roomID: this.state.roomID,
-        });
-        socket.disconnect();
-    }
-
-    createRoom = () => {
-        let options = [];
-        this.state.options.forEach((option) => {
-            options.push({
-                name: option,
-                users: [],
-            });
-        });
-        socket.emit("createRoom", {
-            options: options,
-        });
         socket.on("roomID", (roomID) => {
             this.setState({
                 roomIDLoaded: true,
@@ -61,6 +42,29 @@ class CreateScreen extends React.Component {
                 roomIDLoaded: false,
             });
         });
+    }
+
+    componentWillUnmount() {
+        socket.emit("deleteRoom", {
+            roomID: this.state.roomID,
+        });
+        socket.disconnect();
+    }
+
+    createRoom = () => {
+        let options = [];
+        console.log("PRESSED");
+        this.state.options.forEach((option) => {
+            options.push({
+                name: option,
+                users: [],
+            });
+        });
+        if (this.state.options.length > 0) {
+            socket.emit("createRoom", {
+                options: options,
+            });
+        }
     };
 
     getResults = () => {
@@ -70,12 +74,18 @@ class CreateScreen extends React.Component {
     };
 
     addOption = (option) => {
-        let currentArray = this.state.options;
-        console.log(option);
-        currentArray.push(option);
-        this.setState({
-            options: currentArray,
-        });
+        if (/\S/.test(option) && this.state.options.indexOf(option) == -1) {
+            document.getElementById("options").value = "";
+            document.getElementById("options").focus();
+            let currentArray = this.state.options;
+            console.log(option);
+            currentArray.push(option);
+            this.setState({
+                options: currentArray,
+            });
+        } else {
+            //RED HIGHLIGHT TO BE IMPLEMENTED
+        }
     };
 
     removeOption = (option) => {
@@ -89,33 +99,42 @@ class CreateScreen extends React.Component {
     getScreen = () => {
         if (this.state.roomIDLoaded) {
             return (
-                <div class="createScreen">
-                    <h1>ROOM CREATED SUCCESSFULLY</h1>
-                    <h2>YOUR ROOM ID:</h2>
-                    <h2>{this.state.roomID}</h2>
+                <div class="chamberScreen">
+                    <div class="chamberCreated">
+                        <h3>CHAMBER ID:</h3>
+                        <h2>{this.state.roomID}</h2>
+                    </div>
                     <div class="finishedVoting">
+                        <h2>Finished Voting:</h2>
                         {this.state.finishedVoting.map((user) => (
-                            <h1>{user} has finished voting!</h1>
+                            <h1>{user}</h1>
                         ))}
                     </div>
-                    <button onClick={() => this.getResults()}>
-                        Get Results
-                    </button>
-                    <button
-                        onClick={() =>
-                            this.props.updateFunction("onCreateJoinScreen")
-                        }
-                    >
-                        Go Back
-                    </button>
+                    <div class="buttonGroup">
+                        <button
+                            onClick={() => this.getResults()}
+                            class="inputButton"
+                        >
+                            Get Results
+                        </button>
+                        <button
+                            class="inputButton"
+                            onClick={() =>
+                                this.props.updateFunction("onCreateJoinScreen")
+                            }
+                        >
+                            End Chamber
+                        </button>
+                    </div>
                 </div>
             );
         }
         if (this.state.results) {
             return (
-                <div class="createScreen">
+                <div class="winnerScreen">
                     <h1>{this.state.winner} wins!</h1>
                     <button
+                        class="inputButton"
                         onClick={() =>
                             this.props.updateFunction("onCreateJoinScreen")
                         }
@@ -139,9 +158,10 @@ class CreateScreen extends React.Component {
                             type="text"
                             placeholder="Option"
                             id="options"
-                            class="textInput"
+                            class="textInputButton"
                         ></input>
                         <button
+                            class="addButton"
                             onClick={() =>
                                 this.addOption(
                                     document.getElementById("options").value
@@ -151,8 +171,11 @@ class CreateScreen extends React.Component {
                             Add
                         </button>
                     </div>
+                </div>
+                <div class="optionsGroup">
+                    <h2>Options</h2>
                     {this.state.options.map((option) => (
-                        <h2>
+                        <div class="addedOption">
                             {option}{" "}
                             <button
                                 id={option}
@@ -160,7 +183,7 @@ class CreateScreen extends React.Component {
                             >
                                 Remove
                             </button>
-                        </h2>
+                        </div>
                     ))}
                 </div>
                 <div class="buttonGroup">

@@ -3,7 +3,7 @@ import axios from "axios";
 import TinderCard from "react-tinder-card";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "192.168.1.21:8000";
+const ENDPOINT = "http://localhost:8000/";
 var socket;
 
 class RoomScreen extends React.Component {
@@ -33,7 +33,7 @@ class RoomScreen extends React.Component {
                 });
 
                 axios
-                    .get("http://192.168.1.21:8000/api/defaultoptions", {
+                    .get("http://localhost:8000/api/defaultoptions", {
                         params: { roomID: info.roomID },
                     })
                     .then((res) => {
@@ -115,11 +115,11 @@ class RoomScreen extends React.Component {
                     </div>
                 );
             case "finishedVoting":
-                return <h1>FINISHED VOTING!</h1>;
+                return <h1>You finished voting! Waiting for results...</h1>;
             case "results":
                 return <h1>{this.state.winner} wins!</h1>;
             case "roomClosed":
-                return <h1>ROOM CLOSED</h1>;
+                return <h1>CHAMBER CLOSED</h1>;
         }
     };
 
@@ -127,7 +127,12 @@ class RoomScreen extends React.Component {
         return (
             <div class="roomScreen">
                 {this.getScreen()}
-                <button onClick={() => this.props.leaveRoom()}>Go Back</button>
+                <button
+                    onClick={() => this.props.leaveRoom()}
+                    class="inputButton"
+                >
+                    Leave Chamber
+                </button>
             </div>
         );
     }

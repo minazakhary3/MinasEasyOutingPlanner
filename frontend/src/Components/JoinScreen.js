@@ -12,9 +12,14 @@ class JoinScreen extends React.Component {
     }
 
     joinRoom = () => {
-        this.setState({
-            currentScreen: "roomScreen",
-        });
+        if (
+            /\S/.test(document.getElementById("name").value) &&
+            /\S/.test(document.getElementById("roomID").value)
+        ) {
+            this.setState({
+                currentScreen: "roomScreen",
+            });
+        }
     };
 
     leaveRoom = () => {

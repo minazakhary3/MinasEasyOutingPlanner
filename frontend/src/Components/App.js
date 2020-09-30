@@ -43,7 +43,7 @@ class App extends React.Component {
             case "onCreateScreen":
                 return "Create Chamber";
             case "onCreateJoinScreen":
-                return "MEOP";
+                return "Mina's Easy Outing Planner";
         }
     };
 

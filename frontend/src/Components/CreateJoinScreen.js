@@ -1,10 +1,14 @@
 import React from "react";
-import Header from "./Header";
 
 class CreateJoinScreen extends React.Component {
     render() {
         return (
             <div class="createJoinScreen">
+                <img
+                    src={require("../BarneyWink.png")}
+                    alt="Barney Winking"
+                    class="barney"
+                ></img>
                 <div class="buttonGroup">
                     <button
                         class="mainButton"

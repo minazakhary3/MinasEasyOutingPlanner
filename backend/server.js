@@ -40,7 +40,10 @@ io.on("connection", (socket) => {
     });
 
     socket.on("deleteRoom", (room) => {
-        console.log("Room: " + newRoom.roomID + " has been deleted.");
+        if (newRoom != null) {
+            console.log("Room: " + newRoom.roomID + " has been deleted.");
+        }
+
         rooms.splice(rooms.indexOf(newRoom));
 
         io.in(room.roomID).clients((err, clients) => {
