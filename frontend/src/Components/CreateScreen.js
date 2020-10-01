@@ -1,7 +1,7 @@
 import React from "react";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://localhost:8000/";
+const ENDPOINT = "/";
 var socket;
 class CreateScreen extends React.Component {
     constructor(props) {

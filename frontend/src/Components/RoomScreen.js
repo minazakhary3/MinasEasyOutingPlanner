@@ -3,7 +3,7 @@ import axios from "axios";
 import TinderCard from "react-tinder-card";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://localhost:8000/";
+const ENDPOINT = "/";
 var socket;
 
 class RoomScreen extends React.Component {
@@ -33,7 +33,7 @@ class RoomScreen extends React.Component {
                 });
 
                 axios
-                    .get("http://localhost:8000/api/defaultoptions", {
+                    .get("/api/defaultoptions", {
                         params: { roomID: info.roomID },
                     })
                     .then((res) => {
