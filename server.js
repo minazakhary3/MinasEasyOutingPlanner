@@ -6,7 +6,7 @@ const cors = require("cors");
 const port = process.env.PORT || "8000";
 
 const app = express();
-
+app.use(express.static(path.join(__dirname, "frontend/build")));
 app.use(cors());
 
 const server = http.createServer(app);
