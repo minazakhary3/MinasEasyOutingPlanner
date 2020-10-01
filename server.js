@@ -1,6 +1,7 @@
 const express = require("express");
 const socketIo = require("socket.io");
 const http = require("http");
+const path = require("path");
 const cors = require("cors");
 
 const port = process.env.PORT || "8000";
@@ -204,4 +205,8 @@ app.get("/api/defaultoptions", (req, res) => {
     });
     console.log(options);
     res.json(options);
+});
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
 });
