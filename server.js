@@ -10,7 +10,7 @@ const port = process.env.PORT || "8000";
 
 const app = express();
 app.use(
-    subdomain("meop", express.static(path.join(__dirname, "frontend/build")))
+    subdomain("planner", express.static(path.join(__dirname, "frontend/build")))
 );
 app.use(cors());
 
