@@ -9,7 +9,9 @@ const router = express.Router();
 const port = process.env.PORT || "8000";
 
 const app = express();
-app.use(express.static(path.join(__dirname, "frontend/build")));
+app.use(
+    subdomain("meop", express.static(path.join(__dirname, "frontend/build")))
+);
 app.use(cors());
 
 const server = http.createServer(app);
@@ -201,11 +203,10 @@ io.on("connection", (socket) => {
     });
 });
 
-router.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+app.get("/", (req, res) => {
+    // res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+    res.send("Under Construction, thx");
 });
-
-app.use(subdomain("meop", router));
 
 app.get("/api/defaultoptions", (req, res) => {
     let options = rooms.find((room) => {
@@ -213,8 +214,4 @@ app.get("/api/defaultoptions", (req, res) => {
     });
     console.log(options);
     res.json(options);
-});
-
-app.get("/", (req, res) => {
-    res.send("HELLO!");
 });
