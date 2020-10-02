@@ -1,8 +1,10 @@
 const express = require("express");
+const subdomain = require("express-subdomain");
 const socketIo = require("socket.io");
 const http = require("http");
 const path = require("path");
 const cors = require("cors");
+const router = express.Router();
 
 const port = process.env.PORT || "8000";
 
@@ -199,6 +201,12 @@ io.on("connection", (socket) => {
     });
 });
 
+router.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+});
+
+app.use(subdomain("meop", router));
+
 app.get("/api/defaultoptions", (req, res) => {
     let options = rooms.find((room) => {
         return room.roomID == req.query.roomID;
@@ -207,6 +215,6 @@ app.get("/api/defaultoptions", (req, res) => {
     res.json(options);
 });
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+app.get("/", (req, res) => {
+    res.send("HELLO!");
 });
